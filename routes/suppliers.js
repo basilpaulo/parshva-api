@@ -5,10 +5,18 @@ const xlsx = require("node-xlsx");
 var express = require("express");
 var router = express.Router();
 
-router.get("/", function (req, res, next) {
-  const workSheetsFromFile = xlsx.parse(
-    `../api/public/assets/export29913.xlsx`
+router.get("/", async function (req, res, next) {
+  const response = await fetch(
+    "https://raw.githubusercontent.com/basilpaulo/parshva-api/main/public/assets/export29913.xlsx"
   );
+
+  const buffer = await response.arrayBuffer();
+
+  const data = new Uint8Array(buffer);
+  const workSheetsFromFile = xlsx.parse(data);
+
+  // Parse the Excel data
+  // const workSheetsFromFile = xlsx.read(buffer, { type: "buffer" });
   //   const workSheetsFromFile = XLSX.readFile("/assets/export29913.xlsx");
   let sup;
   let currSupplier;
